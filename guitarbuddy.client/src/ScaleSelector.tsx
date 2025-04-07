@@ -1,4 +1,4 @@
-import { useState } from 'react';  // Removed useEffect since it's not needed
+import { useState, useEffect } from 'react';
 
 interface Scale {
     root: string;
@@ -7,19 +7,32 @@ interface Scale {
 }
 
 const ScaleSelector: React.FC = () => {
-    const [selectedRoot, setSelectedRoot] = useState<string>("");
+    const [selectedRoot, setSelectedRoot] = useState<string>('');
     const [scale, setScale] = useState<Scale | null>(null);
     const [error, setError] = useState<string | null>(null);
 
+    // Fetch scale data whenever selectedRoot changes
+    useEffect(() => {
+        if (selectedRoot) {
+            fetchScale(selectedRoot);
+        }
+    }, [selectedRoot]);
+
     const fetchScale = async (root: string) => {
         try {
-            const response = await fetch(`/scale?root=${root}`);
+            const response = await fetch(`/api/Scale?root=${root}`);
             if (!response.ok) {
-                throw new Error("Failed to fetch scale");
+                if (response.status === 400) {
+                    const errorData = await response.json();
+                    setError(errorData?.message || "Error fetching scale data");
+                } else {
+                    throw new Error("Unexpected error");
+                }
+            } else {
+                const data: Scale = await response.json();
+                setScale(data);
+                setError(null);
             }
-            const data: Scale = await response.json();
-            setScale(data);
-            setError(null);
         } catch (err: unknown) {
             if (err instanceof Error) {
                 console.error("Error fetching scale data:", err.message);
@@ -35,7 +48,6 @@ const ScaleSelector: React.FC = () => {
     const handleRootChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const root = event.target.value;
         setSelectedRoot(root);
-        fetchScale(root);
     };
 
     return (
@@ -56,11 +68,8 @@ const ScaleSelector: React.FC = () => {
                     <h4>
                         {scale.root} {scale.name} Scale
                     </h4>
-                    <ul>
-                        {scale.notes.map((note, index) => (
-                            <li key={index}>{note}</li>
-                        ))}
-                    </ul>
+                    {/* Display notes as a single line of letters */}
+                    <p>{scale.notes.join(' ')}</p>
                 </div>
             )}
         </div>

@@ -47,9 +47,11 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '^/weatherforecast': {
-                target,
-                secure: false
+            '/api': {
+                target,  // Your backend URL
+                changeOrigin: true,
+                secure: false,
+                rewrite: (path) => path.replace(/^\/api/, ''),  // Optional path rewrite
             }
         },
         port: parseInt(env.DEV_SERVER_PORT || '51791'),
