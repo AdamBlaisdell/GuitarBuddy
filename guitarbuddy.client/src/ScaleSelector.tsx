@@ -21,7 +21,7 @@ const ScaleSelector: React.FC = () => {
         try {
             const encodedRoot = encodeURIComponent(root);
             const encodedScale = encodeURIComponent(scale);
-            const response = await fetch(`Scale?root=${encodedRoot}&scale=${encodedScale}`);
+            const response = await fetch(import.meta.env.VITE_API_URL + `Scale?root=${encodedRoot}&scale=${encodedScale}`);
 
             if (!response.ok) {
                 const errorData = await response.json();
@@ -29,7 +29,7 @@ const ScaleSelector: React.FC = () => {
                 setScale(null);
                 return;
             }
-
+                                console.log(import.meta.env.VITE_API_URL);
             const data: Scale = await response.json();
             console.log(data.notes);
             setScale({ ...data, notes: data.notes || [] });
@@ -91,6 +91,7 @@ const ScaleSelector: React.FC = () => {
             {/* Button to trigger fetching the scale */}
             <button
                 onClick={() => {
+
                     if (selectedRoot && selectedScale) {
                         fetchScale(selectedRoot, selectedScale);
                     } else {
