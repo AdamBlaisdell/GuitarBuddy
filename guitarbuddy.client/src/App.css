@@ -1,10 +1,23 @@
-﻿#root {
+﻿/* Ensure the body and html elements take full height */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+/* This ensures the #root container is centered and spans full height */
+#root {
     max-width: 1280px;
     margin: 0 auto;
     padding: 2rem;
     text-align: center;
+    min-height: 100vh; /* Ensure it takes up full height of the screen */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vertically centers content */
+    align-items: center; /* Horizontally centers content */
 }
 
+/* Ensure table elements have consistent padding */
 th, td {
     padding-left: 1rem;
     padding-right: 1rem;
