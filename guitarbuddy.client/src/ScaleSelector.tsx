@@ -21,7 +21,7 @@ const ScaleSelector: React.FC = () => {
         try {
             const encodedRoot = encodeURIComponent(root);
             const encodedScale = encodeURIComponent(scale);
-            const response = await fetch(`/api/Scale?root=${encodedRoot}&scale=${encodedScale}`);
+            const response = await fetch(`Scale?root=${encodedRoot}&scale=${encodedScale}`);
 
             if (!response.ok) {
                 const errorData = await response.json();
