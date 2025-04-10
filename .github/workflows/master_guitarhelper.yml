@@ -24,10 +24,10 @@ jobs:
           dotnet-version: '8.x'
 
       - name: Build with dotnet
-        run: dotnet build GuitarBuddy/guitarbuddy.client/guitarbuddy.client.esproj --configuration Release
+        run: dotnet build GuitarBuddy.Server/GuitarBuddy.Server.csproj --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish GuitarBuddy/guitarbuddy.client/guitarbuddy.client.esproj -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+        run: dotnet publish GuitarBuddy.Server/GuitarBuddy.Server.csproj -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
