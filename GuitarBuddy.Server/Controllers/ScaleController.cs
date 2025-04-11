@@ -106,10 +106,9 @@ public class ScaleController : ControllerBase
             {
                 int intervalIndex = int.Parse(Regex.Replace(name, "[b#]", "")) - 1;  // Remove accidentals (e.g., b, #) and convert to index
                 string noteAlpha = rotatedAlpha[intervalIndex % rotatedAlpha.Count];  // Get the note based on the rotated alphabet
-
                 var enharmonics = chrom[i % chrom.Count];  // Get the enharmonic notes for the interval
-                string match = enharmonics.FirstOrDefault(n => n.StartsWith(noteAlpha));  // Find the correct enharmonic note
 
+                string match = enharmonics.FirstOrDefault(n => n.StartsWith(noteAlpha));  // Find the correct enharmonic note
                 result[name] = match ?? enharmonics[0];  // If no match is found, use the first enharmonic
             }
         }
@@ -117,13 +116,7 @@ public class ScaleController : ControllerBase
         return result;  // Return the final dictionary of intervals and their corresponding notes
     }
 
-    // Get the notes of the scale based on intervals.
-    static List<string> MakeFormula(string formula, Dictionary<string, string> intervals)
-    {
-        return formula.Split(',').Select(x => intervals[x]).ToList();
-    }
-
-[HttpGet]
+    [HttpGet]
 public IActionResult GetScale([FromQuery] string root, [FromQuery] string scale)
 {
     // Ensure the root note and scale type are provided
@@ -131,9 +124,6 @@ public IActionResult GetScale([FromQuery] string root, [FromQuery] string scale)
     {
         return BadRequest("Missing root note or scale type.");
     }
-
-    // Normalize the root to uppercase
-    root = root.ToUpper();
 
     // Determine the interval formula based on the selected scale type
     string intervalFormula = scales.ContainsKey(scale.ToLower()) ? scales[scale.ToLower()] : null;
