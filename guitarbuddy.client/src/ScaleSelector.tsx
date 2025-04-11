@@ -118,3 +118,4 @@ const ScaleSelector: React.FC = () => {
 };
 
 export default ScaleSelector;
+
